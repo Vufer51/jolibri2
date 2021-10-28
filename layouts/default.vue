@@ -39,14 +39,35 @@
     <b-container fluid>
     <nuxt/>
     </b-container>
+
   </div>
 </template>
 
 <script>
+
+import {mapGetters} from "vuex";
+
 export default {
   name: "default",
   data() {
     return {}
+  },
+  computed:{
+    ...mapGetters(['errorsCount', "errorsGet"])
+  },
+  watch:{
+    errorsGet: {
+      handler(val){
+        this.$bvToast.toast(val[val.length-1], {
+          title: `Toaster`,
+          id:val[val.length-1],
+toaster:'b-toaster-bottom-full',
+          solid: true,
+          appendToast: true
+        })
+      },
+      //deep: true
+    }
   }
 }
 </script>
