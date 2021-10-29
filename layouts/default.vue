@@ -36,17 +36,38 @@
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
+    <div v-if="errorsCount>0">
+      <b-alert v-for="(error, n) in errorsGet"
+               :key="n"
+               show
+               dismissible
+               variant="warning"
+               @dismissed="removeError(n)"
+      >
+        {{ error }}
+      </b-alert>
+    </div>
     <b-container fluid>
-    <nuxt/>
+      <nuxt/>
     </b-container>
   </div>
+
 </template>
 
 <script>
+
+import {mapGetters, mapMutations} from "vuex";
+
 export default {
   name: "default",
   data() {
     return {}
+  },
+  computed: {
+    ...mapGetters(['errorsCount', "errorsGet"])
+  },
+  methods: {
+    ...mapMutations(['removeError'])
   }
 }
 </script>
