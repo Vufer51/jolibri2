@@ -36,38 +36,38 @@
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
+    <div v-if="errorsCount>0">
+      <b-alert v-for="(error, n) in errorsGet"
+               :key="n"
+               show
+               dismissible
+               variant="warning"
+               @dismissed="removeError(n)"
+      >
+        {{ error }}
+      </b-alert>
+    </div>
     <b-container fluid>
-    <nuxt/>
+      <nuxt/>
     </b-container>
-
   </div>
+
 </template>
 
 <script>
 
-import {mapGetters} from "vuex";
+import {mapGetters, mapMutations} from "vuex";
 
 export default {
   name: "default",
   data() {
     return {}
   },
-  computed:{
+  computed: {
     ...mapGetters(['errorsCount', "errorsGet"])
   },
-  watch:{
-    errorsGet: {
-      handler(val){
-        this.$bvToast.toast(val[val.length-1], {
-          title: `Toaster`,
-          id:val[val.length-1],
-toaster:'b-toaster-bottom-full',
-          solid: true,
-          appendToast: true
-        })
-      },
-      //deep: true
-    }
+  methods: {
+    ...mapMutations(['removeError'])
   }
 }
 </script>

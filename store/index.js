@@ -14,6 +14,9 @@ export const mutations = {
   addError(store, error) {
     store.errors.push(error);
   },
+  removeError(store, errorPosition) {
+    store.errors.splice(errorPosition, store.errors.length - errorPosition);
+  },
   addMaterial(store, material) {
     store.materials.push(material);
   },
@@ -24,7 +27,6 @@ export const actions = {
     // await dispatch("user/loadUserInfo");
   },
   async addMaterial({ commit }, material) {
-    console.log("staret");
     await this.$strapi
       .create("materials", material)
       .then((result) => commit("addMaterial", result))
