@@ -18,6 +18,9 @@
                 <b-form-checkbox v-model="withPrice">Использовать объемы</b-form-checkbox>
               </b-col>
             </b-row>
+            <b-row><b-col>
+              <vue-typeahead-bootstrap show-on-focus  :serializer="s=>s.title"  :data="laborsWithoutSelected" @hit="addLaborToList"/>
+            </b-col></b-row>
             <b-list-group>
               <b-list-group-item v-for="labor in labors" :key="labor.id" to="#">
                 <b-row>
@@ -43,12 +46,22 @@
         </b-card>
       </b-col>
       <b-col>
-        <b-form-select v-model="selectedLabor" :options="laborsWithoutSelected" text-field="title"
-                       value-field="id" @change="addLaborToList">
-          <b-form-select-option value="null">Выберите</b-form-select-option>
-        </b-form-select>
+      <b-row>
+        <b-col>
+          <b-form-select v-model="selectedLabor" :options="laborsWithoutSelected" text-field="title"
+                         value-field="id" @change="addLaborToList">
+            <b-form-select-option value="null">Выберите</b-form-select-option>
+          </b-form-select>
+        </b-col>
+      </b-row>
+      <b-row>
+        <b-col>
+          <vue-typeahead-bootstrap show-on-focus  :serializer="s=>s.title"  :data="laborsWithoutSelected" @hit="addLaborToList"/>
+        </b-col>
+      </b-row>
       </b-col>
     </b-row>
+
     <b-row>
 
     </b-row>
@@ -57,11 +70,16 @@
 
 <script>
 import {mapGetters} from "vuex";
+import VueTypeaheadBootstrap from 'vue-typeahead-bootstrap';
 
 export default {
   name: "constructor",
+  components: {
+    VueTypeaheadBootstrap
+  },
   data() {
     return {
+      temp: '',
       title: '',
       discount: 0,
       selectedLabor: '',
@@ -72,13 +90,17 @@ export default {
   computed: {
     ...mapGetters({'allLabors': 'labors/getAllLabors'}),
     laborsWithoutSelected() {
-      return this.allLabors.filter(x => !this.labors.includes(x));
+      return this.allLabors.filter(x => !(this.labors.find(i => x.id === i.id)));
     }
   },
   methods: {
-    addLaborToList() {
-      this.labors.push(JSON.parse(JSON.stringify(this.allLabors.find(item => +item.id === +this.selectedLabor))))
-      this.selectedLabor = null
+    addLaborToList(e) {
+      //console.log(e.id);
+      //this.selectedLabor=
+        this.labors.push(this.allLabors.find(item=>+item.id===+e.id))
+     // console.log(this.selectedLabor);
+     // this.labors.push(this.allLabors.find(item=>item.id===this.selectedLabor))
+      //this.labors.push(JSON.parse(JSON.stringify(this.allLabors.find(item => +item.id === +this.selectedLabor))))
     },
     removeLabor(id) {
       this.labors.splice(this.labors.findIndex(x => x.id === id), 1)

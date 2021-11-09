@@ -11,7 +11,7 @@
           <b-nav-item to="/workers">Работники</b-nav-item>
           <b-nav-item-dropdown text="Работы">
             <b-dropdown-item to="/labors">Единицы работ</b-dropdown-item>
-            <b-dropdown-item href="#" disabled>Пакеты работ</b-dropdown-item>
+            <b-dropdown-item href="/labors/packs/constructor" >Пакеты работ</b-dropdown-item>
             <b-dropdown-item href="#" disabled>Комплексы</b-dropdown-item>
           </b-nav-item-dropdown>
 
