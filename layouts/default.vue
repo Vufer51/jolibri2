@@ -8,7 +8,14 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
           <b-nav-item to="/materials">Материалы</b-nav-item>
-          <b-nav-item href="#" disabled>Disabled</b-nav-item>
+          <b-nav-item to="/workers">Работники</b-nav-item>
+          <b-nav-item-dropdown text="Работы">
+            <b-dropdown-item to="/labors">Единицы работ</b-dropdown-item>
+            <b-dropdown-item href="#" disabled>Пакеты работ</b-dropdown-item>
+            <b-dropdown-item href="#" disabled>Комплексы</b-dropdown-item>
+          </b-nav-item-dropdown>
+
+
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->
@@ -36,17 +43,38 @@
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
+    <div v-if="errorsCount>0">
+      <b-alert v-for="(error, n) in errorsGet"
+               :key="n"
+               show
+               dismissible
+               variant="warning"
+               @dismissed="removeError(n)"
+      >
+        {{ error }}
+      </b-alert>
+    </div>
     <b-container fluid>
-    <nuxt/>
+      <nuxt/>
     </b-container>
   </div>
+
 </template>
 
 <script>
+
+import {mapGetters, mapMutations} from "vuex";
+
 export default {
   name: "default",
   data() {
     return {}
+  },
+  computed: {
+    ...mapGetters(['errorsCount', "errorsGet"])
+  },
+  methods: {
+    ...mapMutations(['removeError'])
   }
 }
 </script>
